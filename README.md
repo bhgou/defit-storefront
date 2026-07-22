@@ -52,7 +52,7 @@ backend/WebApplication1/
 
 ```text
 backend/                    # ASP.NET Core API и доменная логика
-frontend/                   # React/Vite-клиент
+./                          # React/Vite-клиент (корень проекта)
 docs/                       # архитектурные решения и API-документация
 ```
 
@@ -69,7 +69,7 @@ Backend ожидает connection string `Database` и настройки Telegr
 
 ```bash
 git clone <repository-url>
-cd frontend
+cd .
 npm install
 npm run dev
 ```
