@@ -1,10 +1,10 @@
-# defit.
+# defit. — full-stack commerce platform
 
-Концепт полнофункционального интернет-магазина одежды с выразительной brutalist-визуальной системой. Проект объединяет каталог, Telegram-авторизацию, корзину, оформление и отслеживание заказов, реферальную программу и административную панель.
+Портфолио-проект интернет-магазина одежды: backend на ASP.NET Core 9 и React-клиент с выразительной brutalist-визуальной системой. Backend — ключевая часть решения: модульный монолит с PostgreSQL, Entity Framework Core, cookie-auth, Telegram-интеграцией, каталогом, корзиной, заказами и административными endpoint'ами.
 
 ## О проекте
 
-`defit.` — frontend e-commerce-приложения, созданный как портфолио-проект. Интерфейс построен вокруг крупной типографики, монохромной палитры и строгой модульной сетки. Приложение адаптировано для desktop и mobile и взаимодействует с REST API.
+`defit.` — full-stack e-commerce-приложение. Сервер отвечает за доменную модель магазина, миграции БД, авторизацию, checkout и интеграцию с Telegram, а React-клиент предоставляет адаптивный интерфейс каталога и личного кабинета.
 
 ## Возможности
 
@@ -18,7 +18,29 @@
 - административная панель для товаров и заказов;
 - адаптивная вёрстка и поддержка `prefers-reduced-motion`.
 
-## Стек
+## Backend
+
+- ASP.NET Core 9 Minimal API
+- Entity Framework Core 9
+- PostgreSQL через Npgsql
+- Cookie Authentication и Authorization
+- Telegram.Bot для авторизации и фоновых уведомлений
+- миграции EF Core и автоматическое применение схемы при запуске
+
+Backend организован как модульный монолит:
+
+```text
+backend/WebApplication1/
+├── Common/Infrastructure/       # DbContext и общая инфраструктура
+├── Modules/Account/              # пользователи и Telegram auth
+├── Modules/Customers/            # каталог и товары
+├── Modules/Orders/               # корзина, промокоды, заказы
+├── Modules/Admin/                # административные endpoint'ы
+├── Modules/Notifications/        # Telegram background service
+└── Migrations/                   # EF Core migrations
+```
+
+## Frontend
 
 - React 19
 - TypeScript 6
@@ -26,26 +48,28 @@
 - CSS без UI-фреймворков
 - ESLint
 
-## Архитектура
+## Структура репозитория
 
 ```text
-src/
-├── entities/product/       # типы предметной области
-├── shared/api/             # REST-клиент и запросы
-├── App.tsx                 # страницы, маршрутизация и бизнес-сценарии
-├── App.css                 # дизайн-система и адаптивные стили
-└── main.tsx                # точка входа
+backend/                    # ASP.NET Core API и доменная логика
+frontend/                   # React/Vite-клиент
+docs/                       # архитектурные решения и API-документация
 ```
-
-Frontend ожидает backend API по адресу `http://localhost:5201`. Основные интеграции находятся в `src/shared/api`.
 
 ## Локальный запуск
 
-Требуется Node.js 20+ и запущенный backend.
+Требуются .NET SDK 9, Node.js 20+ и PostgreSQL.
+
+```bash
+dotnet restore backend/WebApplication1/WebApplication1.csproj
+dotnet run --project backend/WebApplication1
+```
+
+Backend ожидает connection string `Database` и настройки Telegram в конфигурации.
 
 ```bash
 git clone <repository-url>
-cd my-app
+cd frontend
 npm install
 npm run dev
 ```
@@ -61,5 +85,4 @@ npm run build
 
 ## Статус
 
-Портфолио-проект. Клиентская часть готова к подключению к совместимому REST API.
-
+Портфолио-проект с реализованным ASP.NET Core backend и React-клиентом.
