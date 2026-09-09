@@ -16,7 +16,7 @@ function Test3(){
 function BrandIntro({ hidden = false }: { hidden?: boolean }) {
   const [text, setText] = useState('')
   useEffect(() => {
-    const brand = 'defit.'
+    const brand = STORE
     let index = 0
     const timer = window.setInterval(() => {
       index += 1
@@ -25,7 +25,7 @@ function BrandIntro({ hidden = false }: { hidden?: boolean }) {
     }, 140)
     return () => window.clearInterval(timer)
   }, [])
-  return <div className={hidden ? 'brand-intro brand-intro--hidden' : 'brand-intro brand-intro--visible'} aria-label="defit."><span>{text}</span></div>
+  return <div className={hidden ? 'brand-intro brand-intro--hidden' : 'brand-intro brand-intro--visible'} aria-label={STORE}><span>{text}</span></div>
 }
 
 function useStore() {
@@ -71,7 +71,7 @@ function Header({ account, count }: { account: Account | null; count: number }) 
 function Home({ products }: { products: Product[] }) {
   return (
     <main className="catalog-page">
-      <div className="catalog-head"><span>DEFIT.</span><span>{products.length} ТОВАРОВ</span></div>
+      <div className="catalog-head"><span>{STORE.toUpperCase()}</span><span>{products.length} ТОВАРОВ</span></div>
       <div className="products">
         {products.map((product, index) => <ProductTile key={product.id} product={product} index={index} />)}
         {!products.length && <div className="empty-state">КАТАЛОГ ПУСТ.</div>}
@@ -126,7 +126,7 @@ function Login({ onComplete }: { onComplete: () => Promise<void> }) {
   return (
     <main className="login-page">
       <div className="login-page__count">01</div>
-      <p className="eyebrow">ЕДИНЫЙ АККАУНТ DEFIT</p>
+      <p className="eyebrow">ЕДИНЫЙ АККАУНТ {STORE.toUpperCase().replace('.', '')}</p>
       <h1>ВОЙТИ<br />ЧЕРЕЗ <u>TELEGRAM</u></h1>
       <p className="login-page__note">БЕЗ ПАРОЛЯ. ОДНО НАЖАТИЕ.<br />ЗАКАЗЫ И ДОСТАВКА — В ОДНОМ МЕСТЕ.</p>
       <button className="primary" onClick={login} disabled={state === 'waiting'}>
@@ -156,7 +156,7 @@ function ProductPage({ id, account, onCart }: { id: string; account: Account | n
 
   return (
     <main className="product-page">
-      <div className="product-page__media">{product.imageUrl && <img src={product.imageUrl} alt={product.name} />}<span>DEFIT / DROP 01</span></div>
+      <div className="product-page__media">{product.imageUrl && <img src={product.imageUrl} alt={product.name} />}<span>{STORE.toUpperCase()} / DROP 01</span></div>
       <section className="product-page__details">
         <p className="eyebrow">DROP 01 / LIMITED</p><h1>{product.name}</h1><p className="price">{money.format(product.price)}</p>
         <p className="description">ПЛОТНЫЙ МАТЕРИАЛ. СВОБОДНЫЙ СИЛУЭТ. СОЗДАНО, ЧТОБЫ НОСИТЬ КАЖДЫЙ ДЕНЬ И НЕ БЫТЬ КАК ВСЕ.</p>
@@ -240,11 +240,11 @@ function PaymentPage({ id, account }: { id: string; account: Account | null }) {
     catch (reason) { setError(reason instanceof Error ? reason.message : 'НЕ УДАЛОСЬ ОПЛАТИТЬ') }
     finally { setBusy(false) }
   }
-  return <main className="payment-page"><section className="payment-card"><div className="payment-card__head"><span>DEFIT.</span><span>ОПЛАТА ЗАКАЗА</span></div><p>ЗАКАЗ {order.number}</p><h1>{money.format(order.total)}</h1><div className="payment-details"><span>ТОВАРОВ</span><b>{order.items.reduce((sum, item) => sum + item.quantity, 0)}</b><span>ДОСТАВКА</span><b>РАССЧИТАНА</b></div><button className="primary primary--dark" onClick={pay} disabled={busy || order.status !== 'created'}><span>{order.status === 'paid' ? 'УЖЕ ОПЛАЧЕНО' : busy ? 'ОБРАБАТЫВАЕМ' : 'ОПЛАТИТЬ'}</span><b>→</b></button>{order.status === 'paid' && <a className="payment-link" href={`/orders/${id}`}>ПЕРЕЙТИ К ЗАКАЗУ →</a>}{error && <p className="notice">{error}</p>}<small>ТЕСТОВЫЙ РЕЖИМ. СПИСАНИЕ С КАРТЫ НЕ ПРОИЗВОДИТСЯ.</small></section></main>
+  return <main className="payment-page"><section className="payment-card"><div className="payment-card__head"><span>{STORE.toUpperCase()}</span><span>ОПЛАТА ЗАКАЗА</span></div><p>ЗАКАЗ {order.number}</p><h1>{money.format(order.total)}</h1><div className="payment-details"><span>ТОВАРОВ</span><b>{order.items.reduce((sum, item) => sum + item.quantity, 0)}</b><span>ДОСТАВКА</span><b>РАССЧИТАНА</b></div><button className="primary primary--dark" onClick={pay} disabled={busy || order.status !== 'created'}><span>{order.status === 'paid' ? 'УЖЕ ОПЛАЧЕНО' : busy ? 'ОБРАБАТЫВАЕМ' : 'ОПЛАТИТЬ'}</span><b>→</b></button>{order.status === 'paid' && <a className="payment-link" href={`/orders/${id}`}>ПЕРЕЙТИ К ЗАКАЗУ →</a>}{error && <p className="notice">{error}</p>}<small>ТЕСТОВЫЙ РЕЖИМ. СПИСАНИЕ С КАРТЫ НЕ ПРОИЗВОДИТСЯ.</small></section></main>
 }
 
 function Gate({ title }: { title: string }) { return <main className="gate"><p className="eyebrow">ДОСТУП ТОЛЬКО ДЛЯ СВОИХ</p><h1>{title}</h1><a className="primary" href="/register"><span>ВОЙТИ ЧЕРЕЗ TELEGRAM</span><b>↗</b></a></main> }
-function Info({ type }: { type: string }) { const about = type === 'about'; return <main className="info-page"><p className="eyebrow">{about ? '00 / МАНИФЕСТ' : 'INFO / DEFIT'}</p><h1>{about ? 'МЫ НЕ ДЕЛАЕМ\nОДЕЖДУ ДЛЯ ВСЕХ.' : type.toUpperCase()}</h1><p>{about ? 'DEFIT — НЕЗАВИСИМЫЙ БРЕНД ИЗ САМАРЫ. НАС ИНТЕРЕСУЕТ НЕ МОДА, А ХАРАКТЕР. МЫ ДЕЛАЕМ МАЛЫЕ ТИРАЖИ, ЧЕСТНЫЕ ВЕЩИ И НЕ ПОВТОРЯЕМ DROP.' : 'ПОДРОБНАЯ ИНФОРМАЦИЯ СКОРО ПОЯВИТСЯ ЗДЕСЬ. ПО ВСЕМ ВОПРОСАМ НАПИШИ НАМ В TELEGRAM.'}</p></main> }
+function Info({ type }: { type: string }) { const about = type === 'about'; return <main className="info-page"><p className="eyebrow">{about ? '00 / МАНИФЕСТ' : `INFO / ${STORE.toUpperCase()}`}</p><h1>{about ? 'МЫ НЕ ДЕЛАЕМ\nОДЕЖДУ ДЛЯ ВСЕХ.' : type.toUpperCase()}</h1><p>{about ? `${STORE.toUpperCase()} — НЕЗАВИСИМЫЙ БРЕНД ИЗ САМАРЫ. НАС ИНТЕРЕСУЕТ НЕ МОДА, А ХАРАКТЕР. МЫ ДЕЛАЕМ МАЛЫЕ ТИРАЖИ, ЧЕСТНЫЕ ВЕЩИ И НЕ ПОВТОРЯЕМ DROP.` : 'ПОДРОБНАЯ ИНФОРМАЦИЯ СКОРО ПОЯВИТСЯ ЗДЕСЬ. ПО ВСЕМ ВОПРОСАМ НАПИШИ НАМ В TELEGRAM.'}</p></main> }
 
 type AdminProduct = Product
 type AdminOrder = { id: string; number: string; status: string; total: number; customerName: string; phone: string; deliveryAddress: string; trackingNumber: string; createdAt: string; items: number }
@@ -286,7 +286,7 @@ function AdminPage({ account }: { account: Account | null }) {
   }
   const updateStatus = async (id: string, status: string) => { await api(`/api/admin/orders/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }); await load() }
   return <main className="admin-page">
-    <div className="page-title"><p>ADMIN / DEFIT.</p><h1>УПРАВЛЕНИЕ</h1><span>{message}</span></div>
+    <div className="page-title"><p>ADMIN / {STORE.toUpperCase()}</p><h1>УПРАВЛЕНИЕ</h1><span>{message}</span></div>
     <div className="admin-grid">
       <section className="admin-panel"><div className="panel-head"><h2>НОВЫЙ ТОВАР</h2><span>01</span></div><input value={name} onChange={event => setName(event.target.value)} placeholder="НАЗВАНИЕ" /><input value={price} onChange={event => setPrice(event.target.value)} placeholder="ЦЕНА" inputMode="decimal" /><label className="file-upload">{uploading ? 'ЗАГРУЗКА...' : 'ЗАГРУЗИТЬ С КОМПЬЮТЕРА'}<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={event => void uploadImage(event.target.files?.[0])} /></label><input value={imageUrl} onChange={event => setImageUrl(event.target.value)} placeholder="ИЛИ URL ИЗОБРАЖЕНИЯ" /><button className="primary primary--dark" onClick={addProduct}><span>ДОБАВИТЬ ТОВАР</span><b>+</b></button></section>
       <section className="admin-panel"><div className="panel-head"><h2>ТОВАРЫ</h2><span>{products.length}</span></div>{products.map(product => <div className="admin-row" key={product.id}><b>{product.name}</b><span>{money.format(product.price)}</span></div>)}</section>
@@ -295,7 +295,7 @@ function AdminPage({ account }: { account: Account | null }) {
   </main>
 }
 
-function Footer() { return <footer><div className="footer-logo">defit.</div><div><p>НАВИГАЦИЯ</p><a href="/">КАТАЛОГ</a><a href="/account">АККАУНТ</a><a href="/cart">КОРЗИНА</a></div><div><p>ИНФОРМАЦИЯ</p><a href="/delivery">ДОСТАВКА</a><a href="/returns">ВОЗВРАТ</a><a href="/privacy">ПРИВАТНОСТЬ</a></div><div><p>СВЯЗЬ</p><a href="https://t.me/testtesttessfsdfsd_bot">TELEGRAM ↗</a><a href="mailto:hello@defit.store">EMAIL ↗</a></div><small>© 2026 / SAMARA / ALL RIGHTS RESERVED</small></footer> }
+function Footer() { return <footer><div className="footer-logo">{STORE}</div><div><p>НАВИГАЦИЯ</p><a href="/">КАТАЛОГ</a><a href="/account">АККАУНТ</a><a href="/cart">КОРЗИНА</a></div><div><p>ИНФОРМАЦИЯ</p><a href="/delivery">ДОСТАВКА</a><a href="/returns">ВОЗВРАТ</a><a href="/privacy">ПРИВАТНОСТЬ</a></div><div><p>СВЯЗЬ</p><a href="https://t.me/testtesttessfsdfsd_bot">TELEGRAM ↗</a><a href="mailto:hello@defit.store">EMAIL ↗</a></div><small>© 2026 / SAMARA / ALL RIGHTS RESERVED</small></footer> }
 
 export default function App() {
   const { account, cart, setCart, authChecked, refresh } = useStore()
