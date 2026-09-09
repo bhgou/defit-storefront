@@ -121,7 +121,7 @@ function Login({ onComplete }: { onComplete: () => Promise<void> }) {
   return (
     <main className="login-page">
       <div className="login-page__count">01</div>
-      <p className="eyebrow">ЕДИНЫЙ АККАУНТ DEFIT</p>
+      <p className="eyebrow">ЕДИНЫЙ АККАУНТ {STORE.toUpperCase().replace('.', '')}</p>
       <h1>ВОЙТИ<br />ЧЕРЕЗ <u>TELEGRAM</u></h1>
       <p className="login-page__note">БЕЗ ПАРОЛЯ. ОДНО НАЖАТИЕ.<br />ЗАКАЗЫ И ДОСТАВКА — В ОДНОМ МЕСТЕ.</p>
       <button className="primary" onClick={login} disabled={state === 'waiting'}>
@@ -239,7 +239,7 @@ function PaymentPage({ id, account }: { id: string; account: Account | null }) {
 }
 
 function Gate({ title }: { title: string }) { return <main className="gate"><p className="eyebrow">ДОСТУП ТОЛЬКО ДЛЯ СВОИХ</p><h1>{title}</h1><a className="primary" href="/register"><span>ВОЙТИ ЧЕРЕЗ TELEGRAM</span><b>↗</b></a></main> }
-function Info({ type }: { type: string }) { const about = type === 'about'; return <main className="info-page"><p className="eyebrow">{about ? '00 / МАНИФЕСТ' : 'INFO / DEFIT'}</p><h1>{about ? 'МЫ НЕ ДЕЛАЕМ\nОДЕЖДУ ДЛЯ ВСЕХ.' : type.toUpperCase()}</h1><p>{about ? 'DEFIT — НЕЗАВИСИМЫЙ БРЕНД ИЗ САМАРЫ. НАС ИНТЕРЕСУЕТ НЕ МОДА, А ХАРАКТЕР. МЫ ДЕЛАЕМ МАЛЫЕ ТИРАЖИ, ЧЕСТНЫЕ ВЕЩИ И НЕ ПОВТОРЯЕМ DROP.' : 'ПОДРОБНАЯ ИНФОРМАЦИЯ СКОРО ПОЯВИТСЯ ЗДЕСЬ. ПО ВСЕМ ВОПРОСАМ НАПИШИ НАМ В TELEGRAM.'}</p></main> }
+function Info({ type }: { type: string }) { const about = type === 'about'; return <main className="info-page"><p className="eyebrow">{about ? '00 / МАНИФЕСТ' : `INFO / ${STORE.toUpperCase()}`}</p><h1>{about ? 'МЫ НЕ ДЕЛАЕМ\nОДЕЖДУ ДЛЯ ВСЕХ.' : type.toUpperCase()}</h1><p>{about ? `${STORE.toUpperCase()} — НЕЗАВИСИМЫЙ БРЕНД ИЗ САМАРЫ. НАС ИНТЕРЕСУЕТ НЕ МОДА, А ХАРАКТЕР. МЫ ДЕЛАЕМ МАЛЫЕ ТИРАЖИ, ЧЕСТНЫЕ ВЕЩИ И НЕ ПОВТОРЯЕМ DROP.` : 'ПОДРОБНАЯ ИНФОРМАЦИЯ СКОРО ПОЯВИТСЯ ЗДЕСЬ. ПО ВСЕМ ВОПРОСАМ НАПИШИ НАМ В TELEGRAM.'}</p></main> }
 
 type AdminProduct = Product
 type AdminOrder = { id: string; number: string; status: string; total: number; customerName: string; phone: string; deliveryAddress: string; trackingNumber: string; createdAt: string; items: number }
@@ -281,7 +281,7 @@ function AdminPage({ account }: { account: Account | null }) {
   }
   const updateStatus = async (id: string, status: string) => { await api(`/api/admin/orders/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }); await load() }
   return <main className="admin-page">
-    <div className="page-title"><p>ADMIN / DEFIT.</p><h1>УПРАВЛЕНИЕ</h1><span>{message}</span></div>
+    <div className="page-title"><p>ADMIN / {STORE.toUpperCase()}</p><h1>УПРАВЛЕНИЕ</h1><span>{message}</span></div>
     <div className="admin-grid">
       <section className="admin-panel"><div className="panel-head"><h2>НОВЫЙ ТОВАР</h2><span>01</span></div><input value={name} onChange={event => setName(event.target.value)} placeholder="НАЗВАНИЕ" /><input value={price} onChange={event => setPrice(event.target.value)} placeholder="ЦЕНА" inputMode="decimal" /><label className="file-upload">{uploading ? 'ЗАГРУЗКА...' : 'ЗАГРУЗИТЬ С КОМПЬЮТЕРА'}<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={event => void uploadImage(event.target.files?.[0])} /></label><input value={imageUrl} onChange={event => setImageUrl(event.target.value)} placeholder="ИЛИ URL ИЗОБРАЖЕНИЯ" /><button className="primary primary--dark" onClick={addProduct}><span>ДОБАВИТЬ ТОВАР</span><b>+</b></button></section>
       <section className="admin-panel"><div className="panel-head"><h2>ТОВАРЫ</h2><span>{products.length}</span></div>{products.map(product => <div className="admin-row" key={product.id}><b>{product.name}</b><span>{money.format(product.price)}</span></div>)}</section>
@@ -290,7 +290,7 @@ function AdminPage({ account }: { account: Account | null }) {
   </main>
 }
 
-function Footer() { return <footer><div className="footer-logo">defit.</div><div><p>НАВИГАЦИЯ</p><a href="/">КАТАЛОГ</a><a href="/account">АККАУНТ</a><a href="/cart">КОРЗИНА</a></div><div><p>ИНФОРМАЦИЯ</p><a href="/delivery">ДОСТАВКА</a><a href="/returns">ВОЗВРАТ</a><a href="/privacy">ПРИВАТНОСТЬ</a></div><div><p>СВЯЗЬ</p><a href="https://t.me/testtesttessfsdfsd_bot">TELEGRAM ↗</a><a href="mailto:hello@defit.store">EMAIL ↗</a></div><small>© 2026 / SAMARA / ALL RIGHTS RESERVED</small></footer> }
+function Footer() { return <footer><div className="footer-logo">{STORE}</div><div><p>НАВИГАЦИЯ</p><a href="/">КАТАЛОГ</a><a href="/account">АККАУНТ</a><a href="/cart">КОРЗИНА</a></div><div><p>ИНФОРМАЦИЯ</p><a href="/delivery">ДОСТАВКА</a><a href="/returns">ВОЗВРАТ</a><a href="/privacy">ПРИВАТНОСТЬ</a></div><div><p>СВЯЗЬ</p><a href="https://t.me/testtesttessfsdfsd_bot">TELEGRAM ↗</a><a href="mailto:hello@defit.store">EMAIL ↗</a></div><small>© 2026 / SAMARA / ALL RIGHTS RESERVED</small></footer> }
 
 export default function App() {
   const { account, cart, setCart, authChecked, refresh } = useStore()
