@@ -8,8 +8,8 @@ const STORE = 'defit.'
 const money = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 })
 const emptyCart: Cart = { items: [], count: 0, subtotal: 0 }
 
-function Test(){
-  
+function Test2(){
+
 }
 
 
