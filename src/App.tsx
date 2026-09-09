@@ -11,7 +11,7 @@ const emptyCart: Cart = { items: [], count: 0, subtotal: 0 }
 function BrandIntro({ hidden = false }: { hidden?: boolean }) {
   const [text, setText] = useState('')
   useEffect(() => {
-    const brand = 'defit.'
+    const brand = STORE
     let index = 0
     const timer = window.setInterval(() => {
       index += 1
