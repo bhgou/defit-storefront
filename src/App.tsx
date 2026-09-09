@@ -20,7 +20,7 @@ function BrandIntro({ hidden = false }: { hidden?: boolean }) {
     }, 140)
     return () => window.clearInterval(timer)
   }, [])
-  return <div className={hidden ? 'brand-intro brand-intro--hidden' : 'brand-intro brand-intro--visible'} aria-label="defit."><span>{text}</span></div>
+  return <div className={hidden ? 'brand-intro brand-intro--hidden' : 'brand-intro brand-intro--visible'} aria-label={STORE}><span>{text}</span></div>
 }
 
 function useStore() {
@@ -66,7 +66,7 @@ function Header({ account, count }: { account: Account | null; count: number }) 
 function Home({ products }: { products: Product[] }) {
   return (
     <main className="catalog-page">
-      <div className="catalog-head"><span>DEFIT.</span><span>{products.length} ТОВАРОВ</span></div>
+      <div className="catalog-head"><span>{STORE.toUpperCase()}</span><span>{products.length} ТОВАРОВ</span></div>
       <div className="products">
         {products.map((product, index) => <ProductTile key={product.id} product={product} index={index} />)}
         {!products.length && <div className="empty-state">КАТАЛОГ ПУСТ.</div>}
@@ -151,7 +151,7 @@ function ProductPage({ id, account, onCart }: { id: string; account: Account | n
 
   return (
     <main className="product-page">
-      <div className="product-page__media">{product.imageUrl && <img src={product.imageUrl} alt={product.name} />}<span>DEFIT / DROP 01</span></div>
+      <div className="product-page__media">{product.imageUrl && <img src={product.imageUrl} alt={product.name} />}<span>{STORE.toUpperCase()} / DROP 01</span></div>
       <section className="product-page__details">
         <p className="eyebrow">DROP 01 / LIMITED</p><h1>{product.name}</h1><p className="price">{money.format(product.price)}</p>
         <p className="description">ПЛОТНЫЙ МАТЕРИАЛ. СВОБОДНЫЙ СИЛУЭТ. СОЗДАНО, ЧТОБЫ НОСИТЬ КАЖДЫЙ ДЕНЬ И НЕ БЫТЬ КАК ВСЕ.</p>
@@ -235,7 +235,7 @@ function PaymentPage({ id, account }: { id: string; account: Account | null }) {
     catch (reason) { setError(reason instanceof Error ? reason.message : 'НЕ УДАЛОСЬ ОПЛАТИТЬ') }
     finally { setBusy(false) }
   }
-  return <main className="payment-page"><section className="payment-card"><div className="payment-card__head"><span>DEFIT.</span><span>ОПЛАТА ЗАКАЗА</span></div><p>ЗАКАЗ {order.number}</p><h1>{money.format(order.total)}</h1><div className="payment-details"><span>ТОВАРОВ</span><b>{order.items.reduce((sum, item) => sum + item.quantity, 0)}</b><span>ДОСТАВКА</span><b>РАССЧИТАНА</b></div><button className="primary primary--dark" onClick={pay} disabled={busy || order.status !== 'created'}><span>{order.status === 'paid' ? 'УЖЕ ОПЛАЧЕНО' : busy ? 'ОБРАБАТЫВАЕМ' : 'ОПЛАТИТЬ'}</span><b>→</b></button>{order.status === 'paid' && <a className="payment-link" href={`/orders/${id}`}>ПЕРЕЙТИ К ЗАКАЗУ →</a>}{error && <p className="notice">{error}</p>}<small>ТЕСТОВЫЙ РЕЖИМ. СПИСАНИЕ С КАРТЫ НЕ ПРОИЗВОДИТСЯ.</small></section></main>
+  return <main className="payment-page"><section className="payment-card"><div className="payment-card__head"><span>{STORE.toUpperCase()}</span><span>ОПЛАТА ЗАКАЗА</span></div><p>ЗАКАЗ {order.number}</p><h1>{money.format(order.total)}</h1><div className="payment-details"><span>ТОВАРОВ</span><b>{order.items.reduce((sum, item) => sum + item.quantity, 0)}</b><span>ДОСТАВКА</span><b>РАССЧИТАНА</b></div><button className="primary primary--dark" onClick={pay} disabled={busy || order.status !== 'created'}><span>{order.status === 'paid' ? 'УЖЕ ОПЛАЧЕНО' : busy ? 'ОБРАБАТЫВАЕМ' : 'ОПЛАТИТЬ'}</span><b>→</b></button>{order.status === 'paid' && <a className="payment-link" href={`/orders/${id}`}>ПЕРЕЙТИ К ЗАКАЗУ →</a>}{error && <p className="notice">{error}</p>}<small>ТЕСТОВЫЙ РЕЖИМ. СПИСАНИЕ С КАРТЫ НЕ ПРОИЗВОДИТСЯ.</small></section></main>
 }
 
 function Gate({ title }: { title: string }) { return <main className="gate"><p className="eyebrow">ДОСТУП ТОЛЬКО ДЛЯ СВОИХ</p><h1>{title}</h1><a className="primary" href="/register"><span>ВОЙТИ ЧЕРЕЗ TELEGRAM</span><b>↗</b></a></main> }
